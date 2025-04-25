@@ -59,6 +59,7 @@ churn_project/
 ├── reports/                 # Relatórios (PDF ou HTML)
 ├── README.md                # Este arquivo
 └── requirements.txt         # Arquivo de dependências
+```
 
 
 ## Conjunto de Dados
