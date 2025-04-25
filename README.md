@@ -41,23 +41,24 @@ Visualizações, comparações entre grupos e teste estatístico de Mann-Whitney
 
 ## Organização do Projeto
 
+```bash
 churn_project/
-├── data/                          # Conjunto de dados
-│   └── churn.csv                  # Arquivo de dados
-├── src/                           # Scripts do projeto
-│   ├── data_loader.py             # Carregamento dos dados
-│   ├── preprocessing.py           # Pré-processamento dos dados
-│   ├── exploratory_analysis.py    # Análise exploratória
-│   ├── model_training.py          # Treinamento de modelos
-│   ├── model_evaluation.py        # Avaliação de modelos
-│   └── visualization.py           # Visualização dos resultados
-├── tests/                         # Testes automatizados
-│   ├── test_data_loader.py        # Testes de carregamento dos dados
-│   ├── test_preprocessing.py      # Testes de pré-processamento
-│   ├── test_model.py              # Testes de treinamento de modelos
-├── reports/                       # Relatórios (PDF ou HTML)
-├── README.md                      # Este arquivo
-└── requirements.txt               # Arquivo de dependências
+├── data/                    # Conjunto de dados
+│   └── churn.csv             # Arquivo de dados
+├── src/                     # Scripts do projeto
+│   ├── data_loader.py       # Carregamento dos dados
+│   ├── preprocessing.py     # Pré-processamento dos dados
+│   ├── exploratory_analysis.py # Análise exploratória
+│   ├── model_training.py    # Treinamento de modelos
+│   ├── model_evaluation.py  # Avaliação de modelos
+│   └── visualization.py     # Visualização dos resultados
+├── tests/                   # Testes automatizados
+│   ├── test_data_loader.py  # Testes de carregamento dos dados
+│   ├── test_preprocessing.py # Testes de pré-processamento
+│   ├── test_model.py        # Testes de treinamento de modelos
+├── reports/                 # Relatórios (PDF ou HTML)
+├── README.md                # Este arquivo
+└── requirements.txt         # Arquivo de dependências
 
 
 ## Conjunto de Dados
