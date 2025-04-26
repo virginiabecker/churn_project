@@ -26,12 +26,12 @@ Durante a análise exploratória, observei alguns padrões importantes relaciona
 
 - Clientes com contratos do tipo "Month-to-month" apresentaram uma taxa de churn significativamente maior:
 
-![Churn por Tipo de Contrato](caminho/para/count_contract_churn.png)
+![Churn por Tipo de Contrato](reports/count_contract_churn.png)
 
 
 - Clientes que cancelaram tendem a ter contratado menos serviços adicionais:
 
-![Distribuição de Serviços por Churn](caminho/para/distrib_services_churn.png)
+![Distribuição de Serviços por Churn](reports/distrib_services_churn.png)
 
 
 
