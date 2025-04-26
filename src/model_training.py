@@ -1,7 +1,6 @@
-
 from sklearn import tree
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_recall_curve
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
 from imblearn.pipeline import Pipeline as ImbPipeline
@@ -28,7 +27,6 @@ def predict_and_evaluate_tree(model, X_test, y_test):
 
 def plot_tree_model(model, feature_names):
     """Plota a árvore de decisão."""
-    plt.figure(figsize=(20, 10))
     tree.plot_tree(
         model,
         feature_names=feature_names,
@@ -156,3 +154,5 @@ def get_feature_importance_adjusted(model, feature_names):
     df_adjusted_importance_top10['dummy_hue'] = 'Importance'
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Importância', y='Feature', hue='dummy_hue', data=df_adjusted_importance_top10, palette='viridis', legend=False)
+
+

@@ -1,56 +1,74 @@
-from src.data_loader import load_data
-from src.preprocessing import preprocess_data, split_data
-from src.exploratory_analysis import (
+from data_loader import load_data
+from preprocessing import preprocess_data, split_data
+from exploratory_analysis import (
     plot_distribution, plot_countplot, plot_correlation_matrix,
     plot_boxplot, plot_boxplot_with_stats, perform_mannwhitneyu_test
 )
-from src.model_training import (
+from model_training import (
     train_decision_tree, tune_decision_tree, train_xgboost_model,
     tune_xgboost, train_xgboost_with_smote, get_feature_importance_adjusted
 )
-from src.model_evaluation import evaluate_model, evaluate_model_with_optimized_threshold
-from src.visualization import plot_tree_model, plot_feature_importance, plot_feature_importance_adjusted
+from model_evaluation import evaluate_model, evaluate_model_with_optimized_threshold
+from visualization import plot_tree_model, plot_feature_importance, plot_feature_importance_adjusted
 from sklearn.tree import DecisionTreeClassifier, export_text
 import pandas as pd  # Importação explícita do pandas
+
+
 
 # Caminho para o arquivo de dados
 DATA_PATH = 'data/churn.csv'
 
+df_raw = pd.read_csv(DATA_PATH)
+print("Dados carregados.")
+
+df_processed_for_eda = preprocess_data(df_raw.copy()) # Pré-processa para a EDA inicial
+
+print("\n--- Análise Exploratória ---")
+plot_boxplot_with_stats(df_processed_for_eda.copy(), 'Churn', 'QtdServicos', 'Churn por Qtd de Serviços')
+
 if __name__ == "__main__":
-    # 1. Carregar os dados
+    # 1. Carregar os dados DENTRO do bloco if
     df = load_data(DATA_PATH)
     print("Dados carregados.")
+    # main.py
 
     # 2. Pré-processar os dados
-    X, y = preprocess_data(df.copy())
+    df_processed = preprocess_data(df.copy()) # Recebe o DataFrame completo
+    print(df_processed.columns.tolist())
+
+    # 3. Separar as features (X) e a variável alvo (y)
+    X = df_processed.drop('Churn', axis=1)
+    y = df_processed['Churn']
+
     X_train, X_test, y_train, y_test = split_data(X, y, stratify=y)
     print("Dados pré-processados e divididos.")
 
-    # 3. Análise exploratória (você pode comentar/descomentar o que quiser executar)
+    # 4. Análise exploratória (você pode comentar/descomentar o que quiser executar)
     print("\n--- Análise Exploratória ---")
     plot_distribution(df, 'tenure', 'Distribuição de Tenure')
-    plot_countplot(df, 'Churn', title='Distribuição de Churn')
-    df_numeric = df.select_dtypes(include=['int64', 'float64'])
+    plot_countplot(df_processed, 'Churn', title='Distribuição de Churn')
+    df_numeric = df_processed.select_dtypes(include=['int64', 'float64'])
     plot_correlation_matrix(df_numeric)
-    plot_countplot(df, 'gender', hue='Churn', title='Churn por Gênero')
-    plot_countplot(df, 'SeniorCitizen', hue='Churn', title="Churn por Perfil Sênior", xticks_labels=['Não Sênior', 'Sênior'])
-    plot_boxplot_with_stats(df, 'Churn', 'QtdServicos', 'Churn por Qtd de Serviços')
-    plot_countplot(df, 'Contract', hue='Churn', title='Churn por Tipo de Contrato')
-    df_clean = df.dropna(subset=['MonthlyCharges', 'TotalCharges']).copy()
-    plot_boxplot(df_clean, 'Churn', 'MonthlyCharges', 'Monthly Charges por Churn')
-    plot_boxplot(df_clean, 'Churn', 'TotalCharges', 'Total Charges por Churn')
-    group_0_qtd = df[df['Churn'] == 0]['QtdServicos']
-    group_1_qtd = df[df['Churn'] == 1]['QtdServicos']
+    plot_countplot(df_processed, 'gender_Male', hue='Churn', title='Churn por Gênero (Masculino)') # Use a nova coluna
+    plot_countplot(df_processed, 'SeniorCitizen', hue='Churn', title="Churn por Perfil Sênior", xticks_labels=['Não Sênior', 'Sênior'])
+    # plot_boxplot_with_stats(df, 'Churn', 'QtdServicos', 'Churn por Qtd de Serviços') # Já foi chamado fora do IF
+    plot_countplot(df_processed, 'Contract_One year', hue='Churn', title='Churn por Contrato (Mensal)')
+    df_clean_processed = df_processed.dropna(subset=['MonthlyCharges', 'TotalCharges']).copy()
+    plot_boxplot(df_clean_processed, 'Churn', 'MonthlyCharges', 'Monthly Charges por Churn')
+    plot_boxplot(df_clean_processed, 'Churn', 'TotalCharges', 'Total Charges por Churn')
+    group_0_qtd = df_processed[df_processed['Churn'] == 0]['QtdServicos']
+    group_1_qtd = df_processed[df_processed['Churn'] == 1]['QtdServicos']
     perform_mannwhitneyu_test(group_0_qtd, group_1_qtd, 'QtdServicos')
     for col in ['MonthlyCharges', 'TotalCharges']:
-        group_0 = df_clean.loc[df_clean['Churn'] == 0, col]
-        group_1 = df_clean.loc[df_clean['Churn'] == 1, col]
+        group_0 = df_clean_processed.loc[df_clean_processed['Churn'] == 0, col]
+        group_1 = df_clean_processed.loc[df_clean_processed['Churn'] == 1, col]
         perform_mannwhitneyu_test(group_0, group_1, col)
 
-    # 4. Treinar e avaliar modelos
+
+    # 5. Treinar e avaliar modelos
     print("\n--- Treinamento e Avaliação de Modelos ---")
 
-    # 4.1. Árvore de Decisão
+    # 5.1. Árvore de Decisão
     print("\n--- Árvore de Decisão ---")
     tree_model = train_decision_tree(X_train, y_train)
     evaluate_model(tree_model, X_test, y_test)
@@ -70,7 +88,7 @@ if __name__ == "__main__":
     feature_importance_best_tree = pd.Series(best_tree_model.feature_importances_, index=X_train.columns).sort_values(ascending=False)
     plot_feature_importance(feature_importance_best_tree, title='Importância das Features (Melhor Árvore de Decisão)')
 
-    # 4.2. XGBoost
+    # 5.2. XGBoost
     print("\n--- XGBoost ---")
     scale_pos_weight_xgb = len(y_train[y_train == 0]) / len(y_train[y_train == 1])
     xgb_model = train_xgboost_model(X_train, y_train, scale_pos_weight=scale_pos_weight_xgb)
@@ -91,7 +109,7 @@ if __name__ == "__main__":
     adjusted_importance_xgb = get_feature_importance_adjusted(best_xgb_model, X_train.columns)
     plot_feature_importance_adjusted(adjusted_importance_xgb, title='Importância das 10 Principais Features (Melhor XGBoost)')
 
-    # 4.3. XGBoost com SMOTE
+    # 5.3. XGBoost com SMOTE
     print("\n--- Melhor XGBoost com SMOTE ---")
     param_grid_xgb_smote = {
         'xgb__max_depth': [5, 7],
@@ -105,7 +123,7 @@ if __name__ == "__main__":
     adjusted_importance_xgb_smote = get_feature_importance_adjusted(best_xgb_smote_model.named_steps['xgb'], X_train.columns)
     plot_feature_importance_adjusted(adjusted_importance_xgb_smote, title='Importância das 10 Principais Features (Melhor XGBoost com SMOTE)')
 
-    # 5. Árvore Didática
+    # 6. Árvore Didática
     print("\n--- Árvore Didática ---")
     top_n_features = adjusted_importance_xgb_smote['Feature'].head(3).tolist()
     X_train_small = X_train[top_n_features]

@@ -9,11 +9,14 @@ def plot_distribution(df, column, title, bins=20):
     plt.title(title)
     plt.show()
 
-def plot_countplot(df, x, hue=None, title=''):
+def plot_countplot(df, column, hue=None, title=None, xticks_labels=None):
     """Gera um gráfico de contagem."""
-    sns.countplot(x=x, hue=hue, data=df)
-    plt.title(title)
-    plt.show()
+    plt.figure(figsize=(8, 6))
+    ax = sns.countplot(data=df, x=column, hue=hue)
+    if title:
+        ax.set_title(title)
+    # Não vamos mais definir os xticks_labels aqui
+    return ax # Retorna o objeto Axes
 
 def plot_correlation_matrix(df_numerics):
     """Gera e exibe a matriz de correlação."""
@@ -104,9 +107,9 @@ if __name__ == '__main__':
 
     group_0_qtd_servicos = df[df['Churn'] == 0]['QtdServicos']
     group_1_qtd_servicos = df[df['Churn'] == 1]['QtdServicos']
-    perform_mannwhitneyu_test(group_0_qtd_servicos, group_1_qtd_servicos, 'QtdServicos')
+    perform_mannwhitneyu_test(group_0_qtd_servicos, group_1_qtd_servicos)
 
     for col in ['MonthlyCharges', 'TotalCharges']:
         group_0 = df_clean.loc[df_clean['Churn'] == 0, col]
         group_1 = df_clean.loc[df_clean['Churn'] == 1, col]
-        perform_mannwhitneyu_test(group_0, group_1, col)
+        perform_mannwhitneyu_test(group_0, group_1)

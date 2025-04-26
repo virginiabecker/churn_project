@@ -120,5 +120,5 @@ O dataset utilizado é o `churn.csv`, contendo informações sobre clientes de t
 **Virginia Becker**
 Economista em transição para a área de dados, apaixonada por resolver problemas com análise, machine learning e boas histórias com dados.
 
-##### [LinkedIn](https://www.linkedin.com/in/virginiastoquettibecker/) • [Medium](https://medium.com/@virginia.becker)
+#### [LinkedIn](https://www.linkedin.com/in/virginiastoquettibecker/) • [Medium](https://medium.com/@virginia.becker)
 
