@@ -21,6 +21,20 @@ O foco principal foi maximizar o recall, buscando reduzir ao máximo os falsos n
 
 Visualizações, comparações entre grupos e teste estatístico de Mann-Whitney para variáveis numéricas não normais.
 
+
+Durante a análise exploratória, observei alguns padrões importantes relacionados ao churn:
+
+- Clientes com contratos do tipo "Month-to-month" apresentaram uma taxa de churn significativamente maior:
+
+![Churn por Tipo de Contrato](caminho/para/count_contract_churn.png)
+
+
+- Clientes que cancelaram tendem a ter contratado menos serviços adicionais:
+
+![Distribuição de Serviços por Churn](caminho/para/distrib_services_churn.png)
+
+
+
 ### 2. Pré-processamento
 
 * Tratamento de dados faltantes: Substituição dos valores ausentes na coluna TotalCharges pela mediana.
@@ -117,6 +131,7 @@ O dataset utilizado é o `churn.csv`, contendo informações sobre clientes de t
 ## Autora
 
 **Virginia Becker**
+
 Economista em transição para a área de dados, apaixonada por resolver problemas com análise, machine learning e boas histórias com dados.
 
 #### [LinkedIn](https://www.linkedin.com/in/virginiastoquettibecker/) • [Medium](https://medium.com/@virginia.becker)
