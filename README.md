@@ -24,7 +24,7 @@ Visualizações, comparações entre grupos e teste estatístico de Mann-Whitney
 
 Durante a análise exploratória, observei alguns padrões importantes relacionados ao churn:
 
-**Clientes com contratos do tipo "Month-to-month" apresentaram uma taxa de churn significativamente maior**
+**Clientes com contratos do tipo "Month-to-month" apresentaram uma taxa de churn significativamente maior:**
 
 ![Churn por Tipo de Contrato](reports/count_contract_churn.png)
 
@@ -32,7 +32,7 @@ Clientes com contrato mensal demonstram maior propensão ao cancelamento, refor�
 
 
 
-**Clientes que cancelaram tendem a ter contratado menos serviços adicionais**
+**Clientes que cancelaram tendem a ter contratado menos serviços adicionais:**
 
 ![Distribuição de Serviços por Churn](reports/distrib_services_churn.png)
 
