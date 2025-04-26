@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Previsão de Churn de Clientes
 
 O projeto tem como objetivo, através de uma análise minuciosa, prever a propensão ao cancelamento de serviços (Churn) em uma empresa de telecomunicações. Para isso, foram utilizadas técnicas de análise de dados e machine learning.
