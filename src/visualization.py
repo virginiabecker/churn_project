@@ -25,8 +25,16 @@ def plot_feature_importance(feature_importance, top_n=10, title='Feature Importa
     plt.ylabel("Feature")
     plt.show()
 
+
+
 def plot_feature_importance_adjusted(importance_df, title='Importância das 10 Principais Features (Modelo Ajustado)'):
     """Plota a importância das features ajustada."""
+    if importance_df is not None and not importance_df.empty:
+        df_adjusted_importance_top10 = importance_df.head(10).copy()
+        df_adjusted_importance_top10['dummy_hue'] = 'Importance'
+
+    else:
+        print("Erro: O DataFrame de importância está vazio ou é None.")
     df_adjusted_importance_top10 = importance_df.head(10).copy()
     df_adjusted_importance_top10['dummy_hue'] = 'Importance'
     plt.figure(figsize=(10, 6))

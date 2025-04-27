@@ -67,8 +67,6 @@ def train_xgboost_model(X_train, y_train, scale_pos_weight=1, random_state=42):
     xgb_model = XGBClassifier(
         objective='binary:logistic',
         scale_pos_weight=scale_pos_weight,
-        use_label_encoder=False,
-        eval_metric='logloss',
         random_state=random_state
     )
     xgb_model.fit(X_train, y_train)
@@ -87,8 +85,6 @@ def tune_xgboost(X_train, y_train, param_grid, scale_pos_weight=1, cv=5, scoring
     xgb = XGBClassifier(
         objective='binary:logistic',
         scale_pos_weight=scale_pos_weight,
-        use_label_encoder=False,
-        eval_metric='logloss',
         random_state=42
     )
     grid = GridSearchCV(
@@ -110,8 +106,6 @@ def train_xgboost_with_smote(X_train, y_train, param_grid, cv=5, scoring='f1'):
         ('smote', SMOTE(random_state=42)),
         ('xgb', XGBClassifier(
             objective='binary:logistic',
-            use_label_encoder=False,
-            eval_metric='logloss',
             random_state=42
         ))
     ])
@@ -149,10 +143,10 @@ def get_feature_importance_adjusted(model, feature_names):
     importance = model.feature_importances_
     df_adjusted_importance = pd.DataFrame({'Feature': feature_names, 'Importância': importance})
     df_adjusted_importance = df_adjusted_importance.sort_values(by='Importância', ascending=False).reset_index(drop=True)
-    print("Top 5 features mais importantes:\n", df_adjusted_importance.head(5))
     df_adjusted_importance_top10 = df_adjusted_importance.head(10).copy()
     df_adjusted_importance_top10['dummy_hue'] = 'Importance'
     plt.figure(figsize=(10, 6))
     sns.barplot(x='Importância', y='Feature', hue='dummy_hue', data=df_adjusted_importance_top10, palette='viridis', legend=False)
+    return df_adjusted_importance
 
 

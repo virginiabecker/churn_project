@@ -62,7 +62,6 @@ def perform_mannwhitneyu_test(group1, group2):
     print(f'Valor-p: {p_value}')
 
 if __name__ == '__main__':
-    # Exemplo de uso
     data_path = 'data/churn.csv'
     df = pd.read_csv(data_path)
     df['Churn'] = df['Churn'].map({'Yes': 1, 'No': 0})
