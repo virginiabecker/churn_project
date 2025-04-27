@@ -9,7 +9,7 @@ from model_training import (
     tune_xgboost, train_xgboost_with_smote, get_feature_importance_adjusted
 )
 from model_evaluation import evaluate_model, evaluate_model_with_optimized_threshold
-from visualization import plot_tree_model
+from visualization import plot_tree_model, plot_feature_importance
 from sklearn.tree import DecisionTreeClassifier, export_text
 import pandas as pd
 
@@ -80,9 +80,9 @@ def main():
     print("\n--- Árvore de Decisão ---")
     tree_model = train_decision_tree(X_train, y_train)
     evaluate_model(tree_model, X_test, y_test)
-    #plot_tree_model(tree_model, X_train.columns, ['No Churn', 'Churn'], title='Árvore de Decisão Inicial')
+    plot_tree_model(tree_model, X_train.columns, ['No Churn', 'Churn'], title='Árvore de Decisão Inicial')
     feature_importance_tree = pd.Series(tree_model.feature_importances_, index=X_train.columns).sort_values(ascending=False)
-    #plot_feature_importance(feature_importance_tree, title='Importância das Features (Árvore de Decisão)')
+    plot_feature_importance(feature_importance_tree, title='Importância das Features (Árvore de Decisão)')
 
     param_grid_tree = {
         'max_depth': [3, 5, 7],
@@ -92,9 +92,9 @@ def main():
     best_tree_model = tune_decision_tree(X_train, y_train, param_grid_tree, scoring='f1')
     print("\n--- Melhor Árvore de Decisão (Ajustada) ---")
     evaluate_model(best_tree_model, X_test, y_test)
-    #plot_tree_model(best_tree_model, X_train.columns, ['No Churn', 'Churn'], title='Melhor Árvore de Decisão (Ajustada)')
+    plot_tree_model(best_tree_model, X_train.columns, ['No Churn', 'Churn'], title='Melhor Árvore de Decisão (Ajustada)')
     feature_importance_best_tree = pd.Series(best_tree_model.feature_importances_, index=X_train.columns).sort_values(ascending=False)
-    #plot_feature_importance(feature_importance_best_tree, title='Importância das Features (Melhor Árvore de Decisão)')
+    plot_feature_importance(feature_importance_best_tree, title='Importância das Features (Melhor Árvore de Decisão)')
 
     # XGBoost
     print("\n--- XGBoost ---")
